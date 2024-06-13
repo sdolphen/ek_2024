@@ -1,5 +1,6 @@
 import streamlit as st
 import pandas as pd
+import plotly.express as px
 
 # Title of the app
 st.title("European Championship 2024 Prediction Game")
@@ -25,5 +26,20 @@ data = pd.DataFrame({
 # Sort the DataFrame by score in descending order
 data = data.sort_values(by='Score', ascending=False)
 
-# Create a bar chart using Streamlit's built-in functionality
-st.bar_chart(data.set_index('Player'))
+# Create a bar chart using Plotly
+fig = px.bar(data, x='Player', y='Score', title='Scores of Players',
+             labels={'Player': 'Players', 'Score': 'Scores'},
+             color_discrete_sequence=['blue', 'white'])
+
+# Customize layout for better mobile experience
+fig.update_layout(
+    title_font_size=20,
+    xaxis_tickangle=-45,
+    xaxis_title_font_size=14,
+    yaxis_title_font_size=14,
+    margin=dict(l=20, r=20, t=30, b=20),
+    height=500
+)
+
+# Display the bar chart in the Streamlit app
+st.plotly_chart(fig, use_container_width=True)
