@@ -60,7 +60,6 @@ fig.update_traces(
 # Display the bar chart in the Streamlit app
 st.plotly_chart(fig, use_container_width=True)
 
-# Add the tweet below the bar chart
+# Add the tweet below the bar chart using iframe
 tweet_url = "https://x.com/EURO2024/status/1801255704197533986"  # Replace with your tweet URL
-tweet_html = f'<blockquote class="twitter-tweet"><a href="{tweet_url}"></a></blockquote> <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>'
-components.html(tweet_html, height=600)  # Increase the height to ensure full visibility
+components.iframe(f"https://twitframe.com/show?url={tweet_url}", height=600)
