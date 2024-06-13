@@ -82,4 +82,4 @@ class Tweet(object):
         return components.html(self.text, height=600)
 
 
-t = Tweet("https://twitter.com/Twitter/status/1460323737035677698").component()
+t = Tweet("https://x.com/EURO2024/status/1801255704197533986").component()
