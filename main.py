@@ -1,6 +1,7 @@
 import streamlit as st
 import pandas as pd
 import plotly.express as px
+import streamlit.components.v1 as components
 
 # Title of the app
 st.title("European Championship 2024 Prediction Game")
@@ -60,6 +61,6 @@ fig.update_traces(
 st.plotly_chart(fig, use_container_width=True)
 
 # Add the tweet below the bar chart
-tweet_url = "https://x.com/OptaJoe/status/1800483123865747708"  # Replace with your tweet URL
+tweet_url = "https://twitter.com/Twitter/status/1460323737035677698"  # Replace with your tweet URL
 tweet_html = f'<blockquote class="twitter-tweet"><a href="{tweet_url}"></a></blockquote> <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>'
-st.components.v1.html(tweet_html, height=400)
+components.html(tweet_html, height=400)
