@@ -1,6 +1,5 @@
 import streamlit as st
 import pandas as pd
-import matplotlib.pyplot as plt
 
 # Title of the app
 st.title("European Championship 2024 Prediction Game")
@@ -26,15 +25,5 @@ data = pd.DataFrame({
 # Sort the DataFrame by score in descending order
 data = data.sort_values(by='Score', ascending=False)
 
-# Create a bar chart
-fig, ax = plt.subplots()
-bars = ax.bar(data['Player'], data['Score'], color=['blue' if i % 2 == 0 else 'white' for i in range(len(data))])
-ax.set_xlabel('Players')
-ax.set_ylabel('Scores')
-ax.set_title('Scores of Players')
-
-# Rotate the x labels for better readability
-plt.xticks(rotation=45)
-
-# Display the bar chart in the Streamlit app
-st.pyplot(fig)
+# Create a bar chart using Streamlit's built-in functionality
+st.bar_chart(data.set_index('Player'))
