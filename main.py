@@ -9,11 +9,6 @@ st.title("European Championship 2024 Prediction Game")
 # Description
 st.write("Visualizing the scores of the players")
 
-# Copy and paste the scores and player names from your Excel file
-# Example:
-# players = ["Alice", "Bob", "Charlie", "David", "Eve", "Frank", "Grace", "Heidi", "Ivan", "Judy", "Karl", "Laura", "Mallory", "Nina", "Oscar", "Peggy", "Quentin"]
-# scores = [10, 5, 3, 8, 12, 7, 6, 11, 4, 15, 9, 2, 14, 1, 13, 16, 17]
-
 # Placeholder for actual player names and scores to be copied from Excel
 players = ["Alice", "Bob", "Charlie", "David", "Eve", "Frank", "Grace", "Heidi", "Ivan", "Judy", "Karl", "Laura", "Mallory", "Nina", "Oscar", "Peggy", "Quentin"]
 scores = [10, 5, 3, 8, 12, 7, 6, 11, 4, 15, 9, 2, 14, 1, 13, 16, 17]
@@ -62,4 +57,5 @@ st.plotly_chart(fig, use_container_width=True)
 
 # Add the tweet below the bar chart using iframe
 tweet_url = "https://x.com/EURO2024/status/1801255704197533986"  # Replace with your tweet URL
-components.iframe(f"https://twitframe.com/show?url={tweet_url}", height=600)
+tweet_embed_url = f"https://twitframe.com/show?url={tweet_url}"
+components.iframe(tweet_embed_url, height=600)
