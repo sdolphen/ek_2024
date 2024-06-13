@@ -1,7 +1,10 @@
 import streamlit as st
 import pandas as pd
 import plotly.express as px
+import requests
 import streamlit.components.v1 as components
+
+
 
 # Title of the app
 st.title("European Championship 2024 Prediction Game")
@@ -60,7 +63,23 @@ fig.update_traces(
 # Display the bar chart in the Streamlit app
 st.plotly_chart(fig, use_container_width=True)
 
-# Add the tweet below the bar chart
-tweet_url = "https://twitter.com/Twitter/status/1460323737035677698"  # Replace with your tweet URL
-tweet_html = f'<blockquote class="twitter-tweet"><a href="{tweet_url}"></a></blockquote> <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>'
-components.html(tweet_html, height=400)
+
+class Tweet(object):
+    def __init__(self, s, embed_str=False):
+        if not embed_str:
+            # Use Twitter's oEmbed API
+            # https://dev.twitter.com/web/embedded-tweets
+            api = "https://publish.twitter.com/oembed?url={}".format(s)
+            response = requests.get(api)
+            self.text = response.json()["html"]
+        else:
+            self.text = s
+
+    def _repr_html_(self):
+        return self.text
+
+    def component(self):
+        return components.html(self.text, height=600)
+
+
+t = Tweet("https://twitter.com/Twitter/status/1460323737035677698").component()
