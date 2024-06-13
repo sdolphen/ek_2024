@@ -24,7 +24,7 @@ data = pd.DataFrame({
 })
 
 # Sort the DataFrame by score in descending order
-#data = data.sort_values(by='Score', ascending=False)
+data = data.sort_values(by='Score', ascending=False)
 
 # Create a bar chart using Plotly with enhanced style
 fig = px.bar(
@@ -32,7 +32,7 @@ fig = px.bar(
     x='Player', 
     y='Score', 
     title='Scores of Players',
-    #labels={'Player': 'Players', 'Score': 'Scores'},
+    labels={'Player': 'Players', 'Score': 'Scores'},
     color='Score',
     color_continuous_scale='Blues',
     template='plotly_white',
@@ -58,3 +58,8 @@ fig.update_traces(
 
 # Display the bar chart in the Streamlit app
 st.plotly_chart(fig, use_container_width=True)
+
+# Add the tweet below the bar chart
+tweet_url = "https://x.com/OptaJoe/status/1800483123865747708"  # Replace with your tweet URL
+tweet_html = f'<blockquote class="twitter-tweet"><a href="{tweet_url}"></a></blockquote> <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>'
+st.components.v1.html(tweet_html, height=400)
