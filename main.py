@@ -9,11 +9,6 @@ st.title("European Championship 2024 Prediction Game")
 # Description
 st.write("Visualizing the scores of the players")
 
-# Copy and paste the scores and player names from your Excel file
-# Example:
-# players = ["Alice", "Bob", "Charlie", "David", "Eve", "Frank", "Grace", "Heidi", "Ivan", "Judy", "Karl", "Laura", "Mallory", "Nina", "Oscar", "Peggy", "Quentin"]
-# scores = [10, 5, 3, 8, 12, 7, 6, 11, 4, 15, 9, 2, 14, 1, 13, 16, 17]
-
 # Placeholder for actual player names and scores to be copied from Excel
 players = ["Alice", "Bob", "Charlie", "David", "Eve", "Frank", "Grace", "Heidi", "Ivan", "Judy", "Karl", "Laura", "Mallory", "Nina", "Oscar", "Peggy", "Quentin"]
 scores = [10, 5, 3, 8, 12, 7, 6, 11, 4, 15, 9, 2, 14, 1, 13, 16, 17]
@@ -60,7 +55,7 @@ fig.update_traces(
 # Display the bar chart in the Streamlit app
 st.plotly_chart(fig, use_container_width=True)
 
-# Add the tweet below the bar chart
-tweet_url = "https://twitter.com/Twitter/status/1460323737035677698"  # Replace with your tweet URL
-tweet_html = f'<blockquote class="twitter-tweet"><a href="{tweet_url}"></a></blockquote> <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>'
-components.html(tweet_html, height=400)
+# Add the tweet below the bar chart using iframe with the correct URL format
+tweet_url = "https://x.com/EURO2024/status/1801255704197533986"  # Replace with your tweet URL
+tweet_embed_url = f"https://twitframe.com/show?url={tweet_url}"
+components.iframe(tweet_embed_url, height=600)
