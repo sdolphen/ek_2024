@@ -38,4 +38,3 @@ plt.xticks(rotation=45)
 
 # Display the bar chart in the Streamlit app
 st.pyplot(fig)
- 
