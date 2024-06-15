@@ -1,6 +1,7 @@
 import streamlit as st
 import pandas as pd
 import plotly.express as px
+import streamlit.components.v1 as components
 
 # Title of the app
 st.title("European Championship 2024 Prediction Game")
@@ -54,12 +55,6 @@ fig.update_traces(
     hoverinfo='text+name'
 )
 
-# Button to expand the chart
-if st.button('Expand Chart'):
-    fig.update_layout(height=800)
-else:
-    fig.update_layout(height=500)
-
 # Display the bar chart in the Streamlit app
 st.plotly_chart(fig, use_container_width=True)
 
@@ -96,3 +91,25 @@ if st.button('Show Score Progression'):
     )
     
     st.plotly_chart(fig_progression, use_container_width=True)
+
+# JavaScript for full-screen functionality
+fullscreen_button = """
+    <script>
+    function fullScreen() {
+        var elem = document.getElementsByClassName('element-container')[0];
+        if (elem.requestFullscreen) {
+            elem.requestFullscreen();
+        } else if (elem.mozRequestFullScreen) { /* Firefox */
+            elem.mozRequestFullScreen();
+        } else if (elem.webkitRequestFullscreen) { /* Chrome, Safari & Opera */
+            elem.webkitRequestFullscreen();
+        } else if (elem.msRequestFullscreen) { /* IE/Edge */
+            elem.msRequestFullscreen();
+        }
+    }
+    </script>
+    <button onclick="fullScreen()">Expand Chart</button>
+"""
+
+# Display the button
+components.html(fullscreen_button, height=50)
