@@ -43,7 +43,8 @@ fig.update_layout(
     xaxis_title_font_size=16,
     yaxis_title_font_size=16,
     margin=dict(l=40, r=40, t=40, b=40),
-    height=500
+    height=500,
+    showlegend=False  # Hide the legend
 )
 
 # Customize hover effects
@@ -90,7 +91,8 @@ if st.button('Show Score Progression'):
         xaxis_title_font_size=16,
         yaxis_title_font_size=16,
         margin=dict(l=40, r=40, t=40, b=40),
-        height=600
+        height=600,
+        showlegend=False  # Hide the legend
     )
     
     st.plotly_chart(fig_progression, use_container_width=True)
