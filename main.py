@@ -21,9 +21,6 @@ data_latest = pd.DataFrame({
     'Score': latest_scores
 })
 
-# Sort the DataFrame by score in descending order
-data_latest = data_latest.sort_values(by='Score', ascending=False)
-
 # Create a bar chart using Plotly with enhanced style
 fig = px.bar(
     data_latest, 
@@ -96,7 +93,7 @@ if st.button('Show Score Progression'):
 fullscreen_button = """
     <script>
     function fullScreen() {
-        var elem = document.getElementsByClassName('element-container')[0];
+        var elem = document.querySelector('.stPlotlyChart');
         if (elem.requestFullscreen) {
             elem.requestFullscreen();
         } else if (elem.mozRequestFullScreen) { /* Firefox */
