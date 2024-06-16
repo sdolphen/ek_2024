@@ -9,9 +9,9 @@ st.title("European Championship 2024 Prediction Game")
 # Description
 st.write("Visualizing the scores of the players")
 
-# Load data from the Excel file
+# Load data from the specific sheet 'Blad1' in the Excel file
 excel_file = 'euro-calcs.xlsx'
-df = pd.read_excel(excel_file)
+df = pd.read_excel(excel_file, sheet_name='Blad1')
 
 # Extract player names from the columns
 players = df.columns.tolist()
