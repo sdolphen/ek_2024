@@ -25,7 +25,7 @@ top_three_players = total_scores.nlargest(3, 'Score')
 
 # Display top three players and their scores with enhanced visual appeal
 st.subheader("Top Three Players")
-cols = st.columns(3)
+cols = st.columns(min(len(top_three_players), 3))
 for index, row in top_three_players.iterrows():
     with cols[index]:
         st.markdown(f"""
