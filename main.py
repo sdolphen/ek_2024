@@ -27,13 +27,14 @@ top_three_players = total_scores.nlargest(3, 'Score')
 st.subheader("Top Three Players")
 cols = st.columns(min(len(top_three_players), 3))
 for index, row in top_three_players.iterrows():
-    with cols[index]:
-        st.markdown(f"""
-            <div style="text-align: center; padding: 10px; border-radius: 10px; background-color: #f9f9f9; margin: 5px;">
-                <h2>{index + 1}. {row['Player']}</h2>
-                <h3 style="color: #4CAF50;">Score: {row['Score']}</h3>
-            </div>
-        """, unsafe_allow_html=True)
+    if index < len(cols):  # Check to avoid IndexError
+        with cols[index]:
+            st.markdown(f"""
+                <div style="text-align: center; padding: 10px; border-radius: 10px; background-color: #f9f9f9; margin: 5px;">
+                    <h2>{index + 1}. {row['Player']}</h2>
+                    <h3 style="color: #4CAF50;">Score: {row['Score']}</h3>
+                </div>
+            """, unsafe_allow_html=True)
 
 # Create DataFrame for latest scores
 data_latest = pd.DataFrame({
