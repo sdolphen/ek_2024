@@ -30,13 +30,6 @@ data_latest = pd.DataFrame({
 # Analyze data to determine the top three players using the latest scores
 top_three_players = data_latest.nlargest(3, 'Score')
 
-# Debug output
-st.write("Latest Scores DataFrame:")
-st.write(data_latest)
-
-st.write("Top Three Players DataFrame:")
-st.write(top_three_players)
-
 # Display top three players and their scores with enhanced visual appeal
 st.subheader("Top Three Players")
 cols = st.columns(3)
