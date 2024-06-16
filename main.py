@@ -9,11 +9,15 @@ st.title("European Championship 2024 Prediction Game")
 # Description
 st.write("Visualizing the scores of the players")
 
-# Player names and scores
-players = ["Alice", "Bob", "Charlie", "David", "Eve", "Frank", "Grace", "Heidi", "Ivan", "Judy", "Karl", "Laura", "Mallory", "Nina", "Oscar", "Peggy"]
-latest_scores = [10, 5, 3, 8, 12, 7, 6, 11, 4, 15, 9, 2, 14, 1, 13, 16]
-previous_scores_1 = [9, 4, 2, 7, 11, 6, 5, 10, 3, 14, 8, 1, 13, 0, 12, 15]
-previous_scores_2 = [8, 3, 1, 6, 10, 5, 4, 9, 2, 13, 7, 0, 12, -1, 11, 14]
+# Load data from the Excel file
+excel_file = 'euro-calcs.xlsx'
+df = pd.read_excel(excel_file)
+
+# Extract player names from the columns
+players = df.columns.tolist()
+
+# Get the latest scores (assuming the last row has the latest scores)
+latest_scores = df.iloc[-1].tolist()
 
 # Create DataFrame for latest scores
 data_latest = pd.DataFrame({
@@ -57,23 +61,17 @@ st.plotly_chart(fig, use_container_width=True)
 
 # Button to show score progression
 if st.button('Show Score Progression'):
-    data_progression = pd.DataFrame({
-        'Player': players,
-        'Latest Score': latest_scores,
-        'Previous Score 1': previous_scores_1,
-        'Previous Score 2': previous_scores_2
-    })
-    
-    data_progression = data_progression.melt(id_vars=['Player'], value_vars=['Latest Score', 'Previous Score 1', 'Previous Score 2'],
-                                             var_name='Time', value_name='Score')
+    # Prepare data for progression chart
+    df['Gameweek'] = df.index + 1  # Add a Gameweek column for reference
+    data_progression = df.melt(id_vars=['Gameweek'], var_name='Player', value_name='Score')
     
     fig_progression = px.bar(
         data_progression,
         x='Player',
         y='Score',
-        color='Time',
+        color='Gameweek',
         title='Score Progression of Players',
-        labels={'Player': 'Players', 'Score': 'Scores', 'Time': 'Time'},
+        labels={'Player': 'Players', 'Score': 'Scores', 'Gameweek': 'Gameweek'},
         template='plotly_white',
         text='Score'  # Add text labels to bars
     )
