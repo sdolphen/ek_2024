@@ -26,11 +26,11 @@ top_three_players = total_scores.nlargest(3, 'Score')
 # Display top three players and their scores with enhanced visual appeal
 st.subheader("Top Three Players")
 cols = st.columns(3)
-for i, (index, row) in enumerate(top_three_players.iterrows()):
-    with cols[i]:
+for rank, (index, row) in enumerate(top_three_players.iterrows(), start=1):
+    with cols[rank - 1]:
         st.markdown(f"""
             <div style="text-align: center; padding: 10px; border-radius: 10px; background-color: #f9f9f9; margin: 5px;">
-                <h2>{index + 1}. {row['Player']}</h2>
+                <h2>{rank}. {row['Player']}</h2>
                 <h3 style="color: #4CAF50;">Score: {row['Score']}</h3>
             </div>
         """, unsafe_allow_html=True)
