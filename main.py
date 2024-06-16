@@ -25,9 +25,9 @@ top_three_players = total_scores.nlargest(3, 'Score')
 
 # Display top three players and their scores with enhanced visual appeal
 st.subheader("Top Three Players")
-cols = st.columns(min(len(top_three_players), 3))
-for index, row in top_three_players.iterrows():
-    with cols[index]:
+cols = st.columns(3)
+for i, (index, row) in enumerate(top_three_players.iterrows()):
+    with cols[i]:
         st.markdown(f"""
             <div style="text-align: center; padding: 10px; border-radius: 10px; background-color: #f9f9f9; margin: 5px;">
                 <h2>{index + 1}. {row['Player']}</h2>
@@ -40,6 +40,10 @@ data_latest = pd.DataFrame({
     'Player': players,
     'Score': latest_scores
 })
+
+# State to keep track of sorting
+if 'is_sorted' not in st.session_state:
+    st.session_state.is_sorted = False
 
 # Function to create and display the bar chart
 def create_bar_chart(data, title):
