@@ -3,14 +3,16 @@ import pandas as pd
 import plotly.express as px
 
 # Function to load data from the Excel file
+@st.cache_data(ttl=600)
 def load_data():
     excel_file = 'euro-calcs.xlsx'
-    return pd.read_excel(excel_file, sheet_name='Blad1')
+    df = pd.read_excel(excel_file, sheet_name='Blad1')
+    return df
 
 # Title of the app
 st.title("EK Prono 2024")
 
-# Load data from the specific sheet 'Blad1' in the Excel file
+# Load initial data from the specific sheet 'Blad1' in the Excel file
 dfs = load_data()
 
 # Extract player names from the columns
@@ -19,10 +21,21 @@ players = dfs.columns.tolist()
 # Get the latest scores (assuming the last row has the latest scores)
 latest_scores = dfs.iloc[-1].tolist()
 
-# Analyze data to determine the top three players
-total_scores = dfs.sum().reset_index()
-total_scores.columns = ['Player', 'Score']
-top_three_players = total_scores.nlargest(3, 'Score')
+# Create DataFrame for latest scores
+data_latest = pd.DataFrame({
+    'Player': players,
+    'Score': latest_scores
+})
+
+# Analyze data to determine the top three players using the latest scores
+top_three_players = data_latest.nlargest(3, 'Score')
+
+# Debug output
+st.write("Latest Scores DataFrame:")
+st.write(data_latest)
+
+st.write("Top Three Players DataFrame:")
+st.write(top_three_players)
 
 # Display top three players and their scores with enhanced visual appeal
 st.subheader("Top Three Players")
@@ -35,16 +48,6 @@ for rank, (index, row) in enumerate(top_three_players.iterrows(), start=1):
                 <h3 style="color: #4CAF50;">Score: {row['Score']}</h3>
             </div>
         """, unsafe_allow_html=True)
-
-# Create DataFrame for latest scores
-data_latest = pd.DataFrame({
-    'Player': players,
-    'Score': latest_scores
-})
-
-# State to keep track of sorting
-if 'is_sorted' not in st.session_state:
-    st.session_state.is_sorted = False
 
 # Function to create and display the bar chart
 def create_bar_chart(data, title):
@@ -82,20 +85,25 @@ def create_bar_chart(data, title):
 
 # Button to sort values based on total score
 if st.button('Sort Scores by Total'):
-    # Reload the data to ensure it reflects the latest changes
+    # Clear cache to ensure the latest data is loaded
+    st.cache_data.clear()
     dfs = load_data()
-    total_scores = dfs.sum().reset_index()
-    total_scores.columns = ['Player', 'Score']
-    total_scores_sorted = total_scores.sort_values(by='Score', ascending=False)
-    st.subheader("Sorted Total Scores")
-    create_bar_chart(total_scores_sorted, 'Total Scores of Players')
+    latest_scores = dfs.iloc[-1].tolist()
+    data_latest = pd.DataFrame({
+        'Player': players,
+        'Score': latest_scores
+    })
+    sorted_data_latest = data_latest.sort_values(by='Score', ascending=False)
+    st.subheader("Sorted Latest Scores")
+    create_bar_chart(sorted_data_latest, 'Sorted Latest Scores of Players')
 else:
     st.subheader("Latest Scores")
     create_bar_chart(data_latest, 'Scores of Players')
 
 # Button to show score progression
 if st.button('Show Score Progression'):
-    # Reload the data to ensure it reflects the latest changes
+    # Clear cache to ensure the latest data is loaded
+    st.cache_data.clear()
     dfs = load_data()
     # Prepare data for progression chart
     dfs['Gameweek'] = dfs.index + 1  # Add a Gameweek column for reference
