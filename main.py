@@ -10,16 +10,16 @@ st.title("EK Prono 2024")
 
 # Load data from the specific sheet 'Blad1' in the Excel file
 excel_file = 'euro-calcs.xlsx'
-df = pd.read_excel(excel_file, sheet_name='Blad1')
+dfs = pd.read_excel(excel_file, sheet_name='Blad1')
 
 # Extract player names from the columns
-players = df.columns.tolist()
+players = dfs.columns.tolist()
 
 # Get the latest scores (assuming the last row has the latest scores)
-latest_scores = df.iloc[-1].tolist()
+latest_scores = dfs.iloc[-1].tolist()
 
 # Analyze data to determine the top three players
-total_scores = df.sum().reset_index()
+total_scores = dfs.sum().reset_index()
 total_scores.columns = ['Player', 'Score']
 top_three_players = total_scores.nlargest(3, 'Score')
 
@@ -92,8 +92,8 @@ else:
 # Button to show score progression
 if st.button('Show Score Progression'):
     # Prepare data for progression chart
-    df['Gameweek'] = df.index + 1  # Add a Gameweek column for reference
-    data_progression = df.melt(id_vars=['Gameweek'], var_name='Player', value_name='Score')
+    dfs['Gameweek'] = dfs.index + 1  # Add a Gameweek column for reference
+    data_progression = dfs.melt(id_vars=['Gameweek'], var_name='Player', value_name='Score')
     
     fig_progression = px.bar(
         data_progression,
