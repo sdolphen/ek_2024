@@ -18,11 +18,36 @@ players = df.columns.tolist()
 # Get the latest scores (assuming the last row has the latest scores)
 latest_scores = df.iloc[-1].tolist()
 
+# Analyze data to determine the top three players
+total_scores = df.sum().reset_index()
+total_scores.columns = ['Player', 'Score']
+top_three_players = total_scores.nlargest(3, 'Score')
+
+# Display top three players and their scores
+st.subheader("Top Three Players")
+for index, row in top_three_players.iterrows():
+    st.write(f"{index + 1}. {row['Player']} with a score of {row['Score']}")
+
+# Analyze data to determine the player(s) with the most progression since the previous game week
+progression = df.diff().iloc[-1].reset_index()
+progression.columns = ['Player', 'Progression']
+max_progression = progression['Progression'].max()
+most_progressed_players = progression[progression['Progression'] == max_progression]
+
+# Display the player(s) with the most progression
+st.subheader("Player(s) with the Most Progression Since Previous Game Week")
+for index, row in most_progressed_players.iterrows():
+    st.write(f"{row['Player']} with a progression of {row['Progression']}")
+
 # Create DataFrame for latest scores
 data_latest = pd.DataFrame({
     'Player': players,
     'Score': latest_scores
 })
+
+# State to keep track of sorting
+if 'is_sorted' not in st.session_state:
+    st.session_state.is_sorted = False
 
 # Function to create and display the bar chart
 def create_bar_chart(data, title):
@@ -58,14 +83,24 @@ def create_bar_chart(data, title):
     
     st.plotly_chart(fig, use_container_width=True)
 
-# Button to sort values based on total score
-if st.button('Sort Scores by Total'):
-    total_scores = df.sum().reset_index()
-    total_scores.columns = ['Player', 'Score']
-    total_scores = total_scores.sort_values(by='Score', ascending=False)
-    st.subheader("Sorted Total Scores")
-    create_bar_chart(total_scores, 'Total Scores of Players')
-else:
+# Buttons to sort and revert sort
+col1, col2 = st.columns(2)
+
+with col1:
+    if st.button('Sort Scores by Total'):
+        st.session_state.is_sorted = True
+        total_scores_sorted = total_scores.sort_values(by='Score', ascending=False)
+        st.subheader("Sorted Total Scores")
+        create_bar_chart(total_scores_sorted, 'Total Scores of Players')
+
+with col2:
+    if st.button('Revert to Original Order'):
+        st.session_state.is_sorted = False
+        st.subheader("Latest Scores")
+        create_bar_chart(data_latest, 'Scores of Players')
+
+# Display the initial graph or sorted graph based on state
+if not st.session_state.is_sorted:
     st.subheader("Latest Scores")
     create_bar_chart(data_latest, 'Scores of Players')
 
