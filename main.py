@@ -18,15 +18,15 @@ players = df.columns.tolist()
 # Get the latest scores (assuming the last row has the latest scores)
 latest_scores = df.iloc[-1].tolist()
 
-# Analyze data to determine the top three players
+# Analyze data to determine the top five players
 total_scores = df.sum().reset_index()
 total_scores.columns = ['Player', 'Score']
-top_three_players = total_scores.nlargest(3, 'Score')
+top_five_players = total_scores.nlargest(5, 'Score')
 
-# Display top three players and their scores with enhanced visual appeal
-st.subheader("Top Three Players")
-cols = st.columns(3)
-for rank, (index, row) in enumerate(top_three_players.iterrows(), start=1):
+# Display top five players and their scores with enhanced visual appeal
+st.subheader("Top Five Players")
+cols = st.columns(5)
+for rank, (index, row) in enumerate(top_five_players.iterrows(), start=1):
     with cols[rank - 1]:
         st.markdown(f"""
             <div style="text-align: center; padding: 10px; border-radius: 10px; background-color: #f9f9f9; margin: 5px;">
