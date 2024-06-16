@@ -2,15 +2,16 @@ import streamlit as st
 import pandas as pd
 import plotly.express as px
 
+# Function to load data from the Excel file
+def load_data():
+    excel_file = 'euro-calcs.xlsx'
+    return pd.read_excel(excel_file, sheet_name='Blad1')
+
 # Title of the app
 st.title("EK Prono 2024")
 
-# Description
-#st.write("Visualizing the scores of the players")
-
 # Load data from the specific sheet 'Blad1' in the Excel file
-excel_file = 'euro-calcs.xlsx'
-dfs = pd.read_excel(excel_file, sheet_name='Blad1')
+dfs = load_data()
 
 # Extract player names from the columns
 players = dfs.columns.tolist()
@@ -44,7 +45,6 @@ data_latest = pd.DataFrame({
 # State to keep track of sorting
 if 'is_sorted' not in st.session_state:
     st.session_state.is_sorted = False
-st.write("")
 
 # Function to create and display the bar chart
 def create_bar_chart(data, title):
@@ -82,15 +82,21 @@ def create_bar_chart(data, title):
 
 # Button to sort values based on total score
 if st.button('Sort Scores by Total'):
+    # Reload the data to ensure it reflects the latest changes
+    dfs = load_data()
+    total_scores = dfs.sum().reset_index()
+    total_scores.columns = ['Player', 'Score']
     total_scores_sorted = total_scores.sort_values(by='Score', ascending=False)
     st.subheader("Sorted Total Scores")
     create_bar_chart(total_scores_sorted, 'Total Scores of Players')
 else:
-    #st.subheader("Latest Scores")
+    st.subheader("Latest Scores")
     create_bar_chart(data_latest, 'Scores of Players')
 
 # Button to show score progression
 if st.button('Show Score Progression'):
+    # Reload the data to ensure it reflects the latest changes
+    dfs = load_data()
     # Prepare data for progression chart
     dfs['Gameweek'] = dfs.index + 1  # Add a Gameweek column for reference
     data_progression = dfs.melt(id_vars=['Gameweek'], var_name='Player', value_name='Score')
