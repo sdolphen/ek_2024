@@ -2,15 +2,20 @@ import streamlit as st
 import pandas as pd
 import plotly.express as px
 
+# Function to load data from the Excel file
+def load_data():
+    excel_file = 'euro-calcs.xlsx'
+    df = pd.read_excel(excel_file, sheet_name='Blad1')
+    return df
+
 # Title of the app
-st.title("EK Prono 2024")
+st.title("European Championship 2024 Prediction Game")
 
 # Description
-#st.write("Visualizing the scores of the players")
+st.write("Visualizing the scores of the players")
 
 # Load data from the specific sheet 'Blad1' in the Excel file
-excel_file = 'euro-calcs.xlsx'
-df = pd.read_excel(excel_file, sheet_name='Blad1')
+df = load_data()
 
 # Extract player names from the columns
 players = df.columns.tolist()
@@ -18,15 +23,15 @@ players = df.columns.tolist()
 # Get the latest scores (assuming the last row has the latest scores)
 latest_scores = df.iloc[-1].tolist()
 
-# Analyze data to determine the top three players
+# Analyze data to determine the top five players
 total_scores = df.sum().reset_index()
 total_scores.columns = ['Player', 'Score']
-top_three_players = total_scores.nlargest(3, 'Score')
+top_five_players = total_scores.nlargest(5, 'Score')
 
-# Display top three players and their scores with enhanced visual appeal
-st.subheader("Top Three Players")
-cols = st.columns(3)
-for rank, (index, row) in enumerate(top_three_players.iterrows(), start=1):
+# Display top five players and their scores with enhanced visual appeal
+st.subheader("Top Five Players")
+cols = st.columns(5)
+for rank, (index, row) in enumerate(top_five_players.iterrows(), start=1):
     with cols[rank - 1]:
         st.markdown(f"""
             <div style="text-align: center; padding: 10px; border-radius: 10px; background-color: #f9f9f9; margin: 5px;">
@@ -40,11 +45,6 @@ data_latest = pd.DataFrame({
     'Player': players,
     'Score': latest_scores
 })
-
-# State to keep track of sorting
-if 'is_sorted' not in st.session_state:
-    st.session_state.is_sorted = False
-st.write("")
 
 # Function to create and display the bar chart
 def create_bar_chart(data, title):
@@ -82,15 +82,21 @@ def create_bar_chart(data, title):
 
 # Button to sort values based on total score
 if st.button('Sort Scores by Total'):
+    # Reload the data to ensure it reflects the latest changes
+    df = load_data()
+    total_scores = df.sum().reset_index()
+    total_scores.columns = ['Player', 'Score']
     total_scores_sorted = total_scores.sort_values(by='Score', ascending=False)
     st.subheader("Sorted Total Scores")
     create_bar_chart(total_scores_sorted, 'Total Scores of Players')
 else:
-    #st.subheader("Latest Scores")
+    st.subheader("Latest Scores")
     create_bar_chart(data_latest, 'Scores of Players')
 
 # Button to show score progression
 if st.button('Show Score Progression'):
+    # Reload the data to ensure it reflects the latest changes
+    df = load_data()
     # Prepare data for progression chart
     df['Gameweek'] = df.index + 1  # Add a Gameweek column for reference
     data_progression = df.melt(id_vars=['Gameweek'], var_name='Player', value_name='Score')
