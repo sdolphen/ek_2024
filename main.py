@@ -23,21 +23,17 @@ total_scores = df.sum().reset_index()
 total_scores.columns = ['Player', 'Score']
 top_three_players = total_scores.nlargest(3, 'Score')
 
-# Display top three players and their scores
+# Display top three players and their scores with enhanced visual appeal
 st.subheader("Top Three Players")
+cols = st.columns(3)
 for index, row in top_three_players.iterrows():
-    st.write(f"{index + 1}. {row['Player']} with a score of {row['Score']}")
-
-# Analyze data to determine the player(s) with the most progression since the previous game week
-progression = df.diff().iloc[-1].reset_index()
-progression.columns = ['Player', 'Progression']
-max_progression = progression['Progression'].max()
-most_progressed_players = progression[progression['Progression'] == max_progression]
-
-# Display the player(s) with the most progression
-st.subheader("Player(s) with the Most Progression Since Previous Game Week")
-for index, row in most_progressed_players.iterrows():
-    st.write(f"{row['Player']} with a progression of {row['Progression']}")
+    with cols[index]:
+        st.markdown(f"""
+            <div style="text-align: center; padding: 10px; border-radius: 10px; background-color: #f9f9f9; margin: 5px;">
+                <h2>{index + 1}. {row['Player']}</h2>
+                <h3 style="color: #4CAF50;">Score: {row['Score']}</h3>
+            </div>
+        """, unsafe_allow_html=True)
 
 # Create DataFrame for latest scores
 data_latest = pd.DataFrame({
