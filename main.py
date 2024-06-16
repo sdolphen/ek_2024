@@ -3,10 +3,10 @@ import pandas as pd
 import plotly.express as px
 
 # Title of the app
-st.title("European Championship 2024 Prediction Game")
+st.title("EK Prono 2024")
 
 # Description
-st.write("Visualizing the scores of the players")
+#st.write("Visualizing the scores of the players")
 
 # Load data from the specific sheet 'Blad1' in the Excel file
 excel_file = 'euro-calcs.xlsx'
@@ -44,6 +44,7 @@ data_latest = pd.DataFrame({
 # State to keep track of sorting
 if 'is_sorted' not in st.session_state:
     st.session_state.is_sorted = False
+st.write("")
 
 # Function to create and display the bar chart
 def create_bar_chart(data, title):
@@ -85,7 +86,7 @@ if st.button('Sort Scores by Total'):
     st.subheader("Sorted Total Scores")
     create_bar_chart(total_scores_sorted, 'Total Scores of Players')
 else:
-    st.subheader("Latest Scores")
+    #st.subheader("Latest Scores")
     create_bar_chart(data_latest, 'Scores of Players')
 
 # Button to show score progression
