@@ -42,6 +42,9 @@ for rank, (index, row) in enumerate(top_three_players.iterrows(), start=1):
             </div>
         """, unsafe_allow_html=True)
 
+
+st.write("")
+st.write("")
 # Function to create and display the bar chart
 def create_bar_chart(data, title):
     fig = px.bar(
