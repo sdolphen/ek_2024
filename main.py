@@ -90,7 +90,7 @@ if st.button('Sort Scores by Total'):
     st.subheader("Sorted Latest Scores")
     create_bar_chart(sorted_data_latest, 'Sorted Latest Scores of Players')
 else:
-    st.subheader("Latest Scores")
+    #st.subheader("Latest Scores")
     create_bar_chart(data_latest, 'Scores of Players')
 
 # Button to show score progression
